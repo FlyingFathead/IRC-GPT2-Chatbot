@@ -1,5 +1,5 @@
 # IRC-GPT2-Chatbot
-An extremely simple Python-based Internet Relay Chat bot client for local GPT-2 TensorFlow models
+An extremely simple Python-based Internet Relay Chat bot client for local GPT-2 TensorFlow models.
 
 ## Setup
 
