@@ -336,6 +336,15 @@ def generate_response(input_text, sender_username):
     # Read the force lowercase option from the configuration file
     force_lowercase = config.getboolean('DEFAULT', 'force_lowercase')
 
+    # Read the remove_bot_mention option from the configuration file
+    remove_bot_mention = config.getboolean('DEFAULT', 'remove_bot_mention')
+
+    if remove_bot_mention:
+        # If the input text starts with the bot's name followed by a colon, remove it
+        bot_name_colon = nickname + ':'
+        if input_text.startswith(bot_name_colon):
+            input_text = input_text[len(bot_name_colon):].lstrip()  # Remove the bot's name and leading spaces
+
     # Generate the response from the model
     response = interact_model(bot, input_text, new)
 
