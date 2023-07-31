@@ -1,16 +1,36 @@
 [DEFAULT]
-# name of the model; must be a directory like: ./models/<modelname>/
+# =======================
+# Model settings & config
+# =======================
+
+# Name of the model; must be a directory like: ./models/<modelname>/
 model_name = "fenno"
 
 # Start the model in new interaction
 new = True
 
-# input and output prefixes
+# Probability of the bot mentioning the user's nickname in the reply
+# (i.e. "<username>: yep, sure..."")
+# 1 = mention every time (100% probability), 0.5 = mention with 50% probability...
+mention_prob = 0.5
+
+# Force model's output to lowercase (excluding reply-to nickname mentions)
+force_lowercase = True
+
+# Input and output prefixes; adjust according to your own model, i.e.:
+# input_prefix = "User: "
+# output_prefix = "Chatbot: "
+#               ...etc.
 input_prefix = "|k| "
 output_prefix = "|v|"
 
 # Starting context; to prime the model better for dialogue
 starting_context = "<|dialogi|>\n"
+
+# Define the filter list of disallowed words/phrases.
+# Any match on these will force a regeneration of the entire line.
+# Add more with i.e. "bad_word1, bad_word2, bad_phrase1, bad_phrase2"
+filter_list = ["<|endoftext|>"]
 
 # Console output debug prints
 debug = True
@@ -44,7 +64,9 @@ learning = ""
 min_num_answers = 1
 max_num_answers = 1
 
-# Configure the IRC settings of your bot
+# ========================
+# IRC settings of your bot
+# ========================
 
 # your irc server's name/hostmask
 SERVER="your.irc.network.server.net"
