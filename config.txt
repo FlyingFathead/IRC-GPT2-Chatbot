@@ -1,0 +1,65 @@
+[DEFAULT]
+# name of the model; must be a directory like: ./models/<modelname>/
+model_name = "fenno"
+
+# Start the model in new interaction
+new = True
+
+# input and output prefixes
+input_prefix = "|k| "
+output_prefix = "|v|"
+
+# Starting context; to prime the model better for dialogue
+starting_context = "<|dialogi|>\n"
+
+# Console output debug prints
+debug = True
+
+# Session timeout in seconds
+timeout = 3600
+
+# top_p (refer to gpt-2 documentation)
+# top = 0.77
+top = 0.77
+
+# Temperature (refer to gpt-2 documentation)
+degree = 1.0
+
+# Top_p multiplier - add to top_p per word 
+# 0.00375 - may be shorter
+# 0.00400
+# 0.00425
+# 0.00450
+# 0.00475
+# 0.00500 - may be longer
+mx = 0.00500
+
+# Top_K unused here, might be useful eventually.
+tok = 0
+
+# This is the start of the learning cache, could be useful eventually.
+learning = ""
+
+# min and max number of answers (for multi-answer rng)
+min_num_answers = 1
+max_num_answers = 1
+
+# Configure the IRC settings of your bot
+
+# your irc server's name/hostmask
+SERVER="your.irc.network.server.net"
+
+# the IRC server port you want the bot to connect to
+PORT=6667
+
+# the nick you want the bot to use
+NICKNAME="GPT2Bot"
+
+# the real name of the bot (displayed on /whois)
+REALNAME="GPT-2 Bot"
+
+# the username of the bot
+USERNAME="GPT2Bot"
+
+# the channel you want the bot to join to
+CHANNEL="#gpt2"
