@@ -1,5 +1,5 @@
 # IRC-GPT2-Chatbot
-# by FlyingFathead & ChaosWhisperer | 07/2023
+# by FlyingFathead & ChaosWhisperer | v0.12 | 08/2023
 # https://github.com/FlyingFathead/IRC-GPT2-Chatbot/
 
 # time & logging
@@ -143,11 +143,19 @@ class Bot:
         try:
             input_text = event.arguments[0]
             sender_username = event.source.nick  # Get the sender's username from the IRC event
+
             response = generate_response(input_text, sender_username)  # Pass the sender's username to the generate_response function
+
+            username_replacer = config.getboolean('DEFAULT', 'username_replacer')
+
+            if username_replacer:
+                # Replace 'USERNAME' with the sender's username
+                # Use a regular expression to replace 'USERNAME' followed by anything
+                response = re.sub(r'USERNAME\b', sender_username, response)
 
             # Split the response into parts that do not exceed the maximum length
             response_parts = split_message(response, 400)  # 400 to leave some room for other parts of the IRC message
-            
+
             # Send each part of the response separately
             for part in response_parts:
                 self.connection.privmsg(self.channel, part)
