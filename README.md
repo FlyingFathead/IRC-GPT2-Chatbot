@@ -24,12 +24,15 @@ An extremely simple Python-based Internet Relay Chat bot client for local GPT-2 
 
     You might want to configure the `input_prefix`, the `output_prefix` and `starting_context` to suit your needs.
     
-    Set up your bot's server, port, nickname, realname, username and channel from the `config.txt` as well.    
+    Set up your bot's variables from `config.txt` as well: `SERVER`, `PORT`, `NICKNAME`, `REALNAME`, `USERNAME`, `CHANNEL`
 
 8. Run the bot:
     ```
     python ircbot.py
     ```
+
+---
+
 Enjoy!
 
 Brought to you by [FlyingFathead](https://github.com/FlyingFathead/) with the kind whispering helps of ChaosWhisperer.
