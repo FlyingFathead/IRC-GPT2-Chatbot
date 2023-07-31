@@ -31,6 +31,12 @@ An extremely simple Python-based Internet Relay Chat (IRC) bot client for local 
     python ircbot.py
     ```
 
+By default, the bot will connect to the IRC server, join the designated channel and answer to all incoming messages on it.
+
+The bot is equipped with a conversational context memory, and also has a default context memory trimmer that works in a rolling window-type of context memory management, and it is set up to filter non-UTF-8 encodings (since encodings can be anything on IRC). All in all a very simple and neat way to add a local GPT-2 model to your IRC channel.
+
+More options might be added in later; stay tuned for updates.
+
 ---
 
 Enjoy!
