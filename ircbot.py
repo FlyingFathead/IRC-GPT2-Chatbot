@@ -268,7 +268,6 @@ def interact_model(bot, input_text, new):
                 encodedstr = splitted.encode(encoding=sys.stdout.encoding, errors='ignore')
                 decodedstr = encodedstr.decode("utf-8")
                 final = str(decodedstr)
-                sanitized = regex(final)
                 finalsan = final
                 finalsan = finalsan.lstrip()
                 
