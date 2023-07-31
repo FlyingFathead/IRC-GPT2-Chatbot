@@ -1,5 +1,5 @@
 # IRC-GPT2-Chatbot
-An extremely simple Python-based Internet Relay Chat bot client for local GPT-2 TensorFlow models.
+An extremely simple Python-based Internet Relay Chat (IRC) bot client for local GPT-2 TensorFlow models.
 
 ## Setup
 
@@ -24,7 +24,7 @@ An extremely simple Python-based Internet Relay Chat bot client for local GPT-2 
 
     You might want to configure the `input_prefix`, the `output_prefix` and `starting_context` to suit your needs.
     
-    Set up your bot's variables from `config.txt` as well: `SERVER`, `PORT`, `NICKNAME`, `REALNAME`, `USERNAME`, `CHANNEL`
+    Set up your bot's IRC server and other variables from `config.txt`: `SERVER`, `PORT`, `NICKNAME`, `REALNAME`, `USERNAME`, `CHANNEL`
 
 8. Run the bot:
     ```
