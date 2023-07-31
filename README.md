@@ -9,22 +9,27 @@ An extremely simple Python-based Internet Relay Chat bot client for local GPT-2 
     cd IRC-GPT2-Chatbot/
     ```
 
-4. Use pip to install the required packages:
+4. Use `pip` to install the required packages:
     ```
     pip install -r requirements.txt
     ```
 
-5. Get your local GPT-2 TensorFlow model files and place them underneat the main program folder 
+5. Get your local GPT-2 TensorFlow model files and place them underneath the main program folder (i.e. `./models/<yourmodelname>`)
 
-6. Edit the `config.txt`
+    To get the model files, you can use i.e. the original OpenAI repo at: https://github.com/openai/gpt-2/
 
-    Set your model name to point out to a directory that holds them, i.e. put them inside a directory tree that corresponds to `./models/<yourmodelname>` in the `config.txt`
+7. Edit the `config.txt`
+
+    Set your model name to point out to a directory that holds them, i.e. put them inside a directory tree that corresponds to `./models/<yourmodelname>` in the `config.txt`, i.e. if your model name is `124M`, make sure its files are in `.models/124M/`
 
     You might want to configure the `input_prefix`, the `output_prefix` and `starting_context` to suit your needs.
     
     Set up your bot's server, port, nickname, realname, username and channel from the `config.txt` as well.    
 
-7. Run the bot:
+8. Run the bot:
     ```
     python ircbot.py
     ```
+Enjoy!
+
+Brought to you by [FlyingFathead](https://github.com/FlyingFathead/) with the kind whispering helps of ChaosWhisperer.
