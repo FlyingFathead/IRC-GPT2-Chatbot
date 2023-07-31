@@ -1,4 +1,6 @@
-#!/bin/bash
+# IRC-GPT2-Chatbot
+# by FlyingFathead & ChaosWhisperer | 07/2023
+# https://github.com/FlyingFathead/IRC-GPT2-Chatbot/
 
 # time & logging
 import time
@@ -45,6 +47,10 @@ nickname = config.get('DEFAULT', 'NICKNAME').strip('"')
 port = config.getint('DEFAULT', 'PORT')
 realname = config.get('DEFAULT', 'REALNAME').strip('"')
 username = config.get('DEFAULT', 'USERNAME').strip('"')
+
+# Read the filter_list from the configuration file and convert it to a Python list
+filter_list_str = config.get('DEFAULT', 'filter_list').strip()
+filter_list = [word.strip() for word in filter_list_str.split(',')]
 
 # (for multi-user mode) Initialize an empty dictionary for each user's context
 user_contexts = {}
@@ -136,8 +142,9 @@ class Bot:
     def on_pubmsg(self, connection, event):
         try:
             input_text = event.arguments[0]
-            response = generate_response(input_text)
-            
+            sender_username = event.source.nick  # Get the sender's username from the IRC event
+            response = generate_response(input_text, sender_username)  # Pass the sender's username to the generate_response function
+
             # Split the response into parts that do not exceed the maximum length
             response_parts = split_message(response, 400)  # 400 to leave some room for other parts of the IRC message
             
@@ -145,7 +152,7 @@ class Bot:
             for part in response_parts:
                 self.connection.privmsg(self.channel, part)
         except UnicodeDecodeError:
-            print("A message was received that could not be decoded. Skipping.")
+            print("[WARN/ERROR] A message was received that could not be decoded. Skipping.")
 
     def start(self):
         self.connect()
@@ -153,6 +160,9 @@ class Bot:
 
 # model interaction
 def interact_model(bot, input_text, new):
+
+    # initialize response
+    response = ""
 
     # Read the model name from the configuration file
     model_name = config.get('DEFAULT', 'model_name').strip('"')
@@ -255,6 +265,17 @@ def interact_model(bot, input_text, new):
                 text = enc.decode(out[i])
                 # Split the generated text on newline characters and only keep the first part
                 text = text.split('\n')[0]
+
+                # Remove carriage return characters from the text
+                text = text.replace("\r", "")
+
+                # Append the first part of the generated text to the response
+                response += text
+
+                # Check if a newline character is present in the generated text
+                if '\n' in text:
+                    break  # Stop generating the response if a newline character is encountered
+
                 # Rest of the code                
                 if debug:
                     print("==========")
@@ -297,21 +318,60 @@ def interact_model(bot, input_text, new):
 
                 return finalsan
 
-def generate_response(input_text):
+# Response generation
+def generate_response(input_text, sender_username):
     global new  # Indicate that we are using the global 'new' variable
+
+    # Read the mention probability from the configuration file
+    mention_prob = config.getfloat('DEFAULT', 'mention_prob')
+
+    # Read the force lowercase option from the configuration file
+    force_lowercase = config.getboolean('DEFAULT', 'force_lowercase')
+
+    # Generate the response from the model
     response = interact_model(bot, input_text, new)
+
+    # Check if the bot's nickname is present at the beginning of the response
+    bot_nickname_colon = nickname + ':'
+    if response.startswith(bot_nickname_colon):
+        # If the bot's nickname is found at the beginning, remove it before mentioning the user
+        response = response[len(bot_nickname_colon):]
+
+    # Mention the user with the given probability
+    mention_user = random.random() < mention_prob
+
+    if mention_user:
+        # Check if the response is empty or starts with a newline, in which case, do not add extra newline
+        if response and not response.startswith('\n'):
+            response = '\n' + response
+
+        # Format the usermention reply appropriately based on force_lowercase
+        if force_lowercase:
+            # Convert the sender_username to lowercase
+            # sender_username = sender_username.lower()
+            response = response.lower()
+            response = f"{sender_username}: {response.lstrip()}"
+    else:
+        # If the response does not start with the bot's nickname or if mention_user is False,
+        # it is considered as generated text and should not be modified.
+        # In this case, if force_lowercase is True, convert the response to lowercase.
+        if force_lowercase:
+            response = response.lower()
+
+    # Remove newline characters from the response, convert to space
+    response = response.replace("\n", " ")
+
+    # Check if the response contains any word from the filter list
+    contains_disallowed_word = any(word in response.lower() for word in filter_list)
+
+    if contains_disallowed_word:
+        # Regenerate the response until it doesn't contain any word from the filter list
+        while contains_disallowed_word:
+            response = interact_model(bot, input_text, new)
+            contains_disallowed_word = any(word in response.lower() for word in filter_list)
+
     new = False  # Set 'new' to False after the first call
     return response
-
-""" @module.rule('.*')
-def respond(bot, trigger):
-    input_text = trigger.group(0)
-    response = generate_response(input_text)
-    bot.say(response) """
-
-""" def main():
-    from sopel import run_script
-    run_script.main(['sopel', '-c', './config.cfg']) """
 
 if __name__ == "__main__":
     bot = Bot(server, channel, nickname)
