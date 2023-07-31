@@ -4,7 +4,7 @@
 # =======================
 
 # Name of the model; must be a directory like: ./models/<modelname>/
-model_name = "fenno"
+model_name = "124M"
 
 # Start the model in new interaction
 new = True
