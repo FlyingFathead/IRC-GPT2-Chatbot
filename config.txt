@@ -4,7 +4,7 @@
 # =======================
 
 # Name of the model; must be a directory like: ./models/<modelname>/
-model_name = "124M"
+model_name = "fenno"
 
 # Start the model in new interaction
 new = True
@@ -63,6 +63,9 @@ learning = ""
 # min and max number of answers (for multi-answer rng)
 min_num_answers = 1
 max_num_answers = 1
+
+# replace instances of USERNAME (a placeholder) with the user's reply-to name
+username_replacer = True
 
 # ========================
 # IRC settings of your bot
