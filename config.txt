@@ -65,7 +65,17 @@ min_num_answers = 1
 max_num_answers = 1
 
 # replace instances of USERNAME (a placeholder) with the user's reply-to name
+# True / False
 username_replacer = True
+
+# remove mention of bot's nick (from user) before the line is passed to the model
+# (in some cases this can provide more accurate responses)
+# True / False
+remove_bot_mention = True
+
+# ========================
+# IRC settings of your bot
+# ========================
 
 # ========================
 # IRC settings of your bot
